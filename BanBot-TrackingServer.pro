@@ -19,11 +19,9 @@ TEMPLATE = app
 
 SOURCES += \
         src/main.cpp \
-        src/udpserver.cpp \
-        src/testsender.cpp
+        src/udpserver.cpp
 
 HEADERS += \
-        src/udpserver.h \
-        src/testsender.h
+        src/udpserver.h
 
 OBJECTS_DIR = .obj

@@ -3,26 +3,18 @@
 #include <QDebug>
 #include <QUdpSocket>
 #include <QXmlStreamReader>
-#include <QTimer>
 
 UdpServer::UdpServer( QObject *parent )
     : QObject( parent )
     , m_port( 6873 )
     , m_socket( new QUdpSocket() )
 {
-    if( !m_socket->bind( QHostAddress::LocalHost, m_port ) ) {
+    if( !m_socket->bind( QHostAddress::Any, m_port ) ) {
         qWarning( "\e[1;31m[ERROR] UdpServer::UdpServer Couldn't bind address \e[0m" );
         return;
     }
 
-    connect( m_socket, SIGNAL( connected() ), this, SLOT( onConnect() ) );
     connect( m_socket, SIGNAL( readyRead() ), this, SLOT( parseData() ) );
-}
-
-
-void UdpServer::onConnect()
-{
-    qDebug( "UdpServer::onConnect" );
 }
 
 

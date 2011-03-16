@@ -12,7 +12,9 @@ public:
     UdpServer( QObject *parent = 0 );
 
 public slots:
-    void onConnect();
+    /**
+     * parses the data recieved
+     */
     void parseData();
 
 private:
@@ -22,9 +24,9 @@ private:
      */
     void parseXml( QByteArray xmlData );
 
-    qint16 m_port;
-    QByteArray m_data;
-    QUdpSocket *m_socket;
+    qint16 m_port;              /** server port. FIXED TO: 6873 */
+    QByteArray m_data;          /** stash recieved data */
+    QUdpSocket *m_socket;       /** the server socket */
 };
 
 #endif  // UDPSERVER_H
