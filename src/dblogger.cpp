@@ -37,6 +37,12 @@ DbLogger::DbLogger()
     setup();
 }
 
+void DbLogger::logServer( const UdpServer::RemoteServerInfo& remoteServer )
+{
+    /// TODO
+    qDebug( "TODO " );
+}
+
 void DbLogger::setup()
 {
     qDebug( "DbController::setup" );
@@ -46,7 +52,7 @@ void DbLogger::setup()
     if( !QDir().exists( m_dbDir ) ) {
         createTable = true;
         if( !QDir().mkdir( m_dbDir ) ) { //create directory
-            qWarning( "\e[1;31mDbController::setup can't create folder for database. Check permissions\e[0m" );
+            qWarning( "\e[1;31mDbLogger::setup can't create folder for database. Check permissions\e[0m" );
             return;
         }
     }
@@ -55,19 +61,19 @@ void DbLogger::setup()
 
     // check if database file exists
     if( QFile::exists( m_dbDir + QDir::separator() + m_dbName ) ) {
-        qWarning( "\e[0;33mDbController::setup found database.. skipping setup\e[0m" );
+        qWarning( "\e[0;33mDbLogger::setup found database.. skipping setup\e[0m" );
         return;
     }
 
     //check database was set correctly
     if( databaseName().isEmpty() ) {
-        qWarning( "\e[1;31mDbController::setup can't load database name setting.\e[0m" );
+        qWarning( "\e[1;31mDbLogger::setup can't load database name setting.\e[0m" );
         return;
     }
 
     //open database to check everything was set correctly
     if ( !open() ) {
-        qWarning( "\e[1;31mDbController::setup can't create connection to SQLITE database: \"%s\"\e[0m", qPrintable( lastError().text() ) );
+        qWarning( "\e[1;31mDbLogger::setup can't create connection to SQLITE database: \"%s\"\e[0m", qPrintable( lastError().text() ) );
         return;
     }
 
@@ -75,7 +81,7 @@ void DbLogger::setup()
     if( createTable ) {
         QSqlQuery query;
         if( !query.exec( SERVERS_TABLE ) ) {
-            qDebug() << "\e[1;31mDbController::setup FAILED to execute query ( servers table ): " << query.lastError().text() << "\e[0m" ;
+            qDebug() << "\e[1;31mDbLogger::setup FAILED to execute query ( servers table ): " << query.lastError().text() << "\e[0m" ;
             return;
         }
     }

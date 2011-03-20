@@ -23,11 +23,14 @@
 #include <QtCore/QCoreApplication>
 
 #include "udpserver.h"
+#include "../testSender/testsender.h"
 
 int main( int argc, char *argv[] )
 {
     QCoreApplication a( argc, argv );
 
     UdpServer *udpServer = new UdpServer();
+//     TestSender asd;
+//     asd.test( "<BanBot><serverName>asd</serverName><version>aadddccc</version></BanBot>" );
     return a.exec();
 }

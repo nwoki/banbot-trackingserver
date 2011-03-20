@@ -25,12 +25,20 @@
 #ifndef DBLOGGER_H
 #define DBLOGGER_H
 
+#include "udpserver.h"
+
 #include <QSqlDatabase>
 
 class DbLogger : public QSqlDatabase
 {
 public:
     DbLogger();
+
+    /**
+     * logs server info to database
+     * @param remoteServer server struct information to log to database
+     */
+    void logServer( const UdpServer::RemoteServerInfo &remoteServer );
 
 private:
     void setup();       /** sets up database and check's for it's existance */

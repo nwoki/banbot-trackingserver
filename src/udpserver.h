@@ -26,18 +26,33 @@
 #include <QObject>
 
 class DbLogger;
+class QHostAddress;
 class QUdpSocket;
 
 class UdpServer : public QObject
 {
     Q_OBJECT
 public:
+
+    /**
+     * struct to store remote server info recieved from BanBots around the world
+     * @param ip server ip
+     * @param port server port
+     * @param name server name
+     * @param version banbot version running on server
+     */
+    struct RemoteServerInfo
+    {
+        QString ip
+        , port
+        , name
+        , version;
+    };
+
     UdpServer( QObject *parent = 0 );
 
 public slots:
-    /**
-     * parses the data recieved
-     */
+    /** parses the data recieved from client connection */
     void parseData();
 
 private:
@@ -45,10 +60,9 @@ private:
      * parse the xml data recieved from a BanBot around the world.
      * @param xmlData data recieved
      */
-    void parseXml( QByteArray xmlData );
+    RemoteServerInfo parseXml( QByteArray xmlData );
 
     qint16 m_port;              /** server port. FIXED TO: 6873 */
-    QByteArray m_data;          /** stash recieved data */
     QUdpSocket *m_socket;       /** the server socket */
     DbLogger *m_dbLogger;       /** write to database info recieved from BanBots */
 };

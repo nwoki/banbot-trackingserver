@@ -47,23 +47,50 @@ void UdpServer::parseData()
     qDebug( "UdpServer::parseData" );
     while( m_socket->hasPendingDatagrams() ) {
         QByteArray rcvMsg;
-        rcvMsg.resize( m_socket->pendingDatagramSize() );
-        m_socket->readDatagram( rcvMsg.data(), rcvMsg.size() );
+        QHostAddress client;
 
-        // add to complete message
-        m_data += rcvMsg;
+        rcvMsg.resize( m_socket->pendingDatagramSize() );
+        m_socket->readDatagram( rcvMsg.data(), rcvMsg.size(), &client );
+
+        RemoteServerInfo remoteServer = parseXml( rcvMsg );
+        remoteServer.ip = client.toString();
+
+        // log data to server
+        m_dbLogger->logServer( remoteServer );
+
+        // use for debugging
+//         qDebug() << "IFNO : " << remoteServer.ip << " " << remoteServer.name << " " << remoteServer.version << " " << remoteServer.port;
+        //     qDebug() << "GAME RECIEVED DATA: " << m_data;
     }
 
-    // use for debugging
-    qDebug() << "GAME RECIEVED DATA: " << m_data;
-    m_data.clear();
+
 }
 
-
-void UdpServer::parseXml( QByteArray xmlData )
+UdpServer::RemoteServerInfo UdpServer::parseXml( QByteArray xmlData )
 {
-    /// TODO
+    RemoteServerInfo info;
     QXmlStreamReader parser( xmlData );
+
+    while( !parser.atEnd() ) {
+        parser.readNext();
+        if( !parser.name().isEmpty() && parser.isStartElement() ) {
+            if( parser.name().toString() != "BanBot" ) {
+                QString elemName = parser.name().toString();
+                parser.readNext();
+
+                if( elemName == "serverName" )
+                    info.name = parser.text().toString();
+                else if( elemName == "port" )
+                    info.port = parser.text().toString();
+                else if( elemName == "version" )
+                    info.version = parser.text().toString();
+            }
+        }
+        else if( parser.hasError() )
+                qDebug() <<  "\e[1;31m[ERROR] UdpServer::parseXml: " << parser.errorString() << "\e[0m";
+    }
+
+    return info;
 }
 
 
