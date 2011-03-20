@@ -21,6 +21,7 @@
  */
 
 #include "udpserver.h"
+#include "dblogger.h"
 
 #include <QDebug>
 #include <QUdpSocket>
@@ -30,6 +31,7 @@ UdpServer::UdpServer( QObject *parent )
     : QObject( parent )
     , m_port( 6873 )
     , m_socket( new QUdpSocket() )
+    , m_dbLogger( new DbLogger() )
 {
     if( !m_socket->bind( QHostAddress::Any, m_port ) ) {
         qWarning( "\e[1;31m[ERROR] UdpServer::UdpServer Couldn't bind address \e[0m" );

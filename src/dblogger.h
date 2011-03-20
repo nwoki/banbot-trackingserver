@@ -1,5 +1,6 @@
 /*
- *      udpserver.h is part of BanBot-TrackingServer
+ *
+ *      dblogger.h is part of BanBot-TrackingServer
  *
  *      BanBot-TrackingServer is free software: you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
@@ -17,40 +18,25 @@
  *
  *      Copyright © 2011 Francesco Nwokeka( n3m3s1s )
  *      Author           Francesco Nwokeka
+ *
+ *      Description: this class is used to log data to an sqlite database
  */
 
+#ifndef DBLOGGER_H
+#define DBLOGGER_H
 
-#ifndef UDPSERVER_H
-#define UDPSERVER_H
+#include <QSqlDatabase>
 
-#include <QObject>
-
-class DbLogger;
-class QUdpSocket;
-
-class UdpServer : public QObject
+class DbLogger : public QSqlDatabase
 {
-    Q_OBJECT
 public:
-    UdpServer( QObject *parent = 0 );
-
-public slots:
-    /**
-     * parses the data recieved
-     */
-    void parseData();
+    DbLogger();
 
 private:
-    /**
-     * parse the xml data recieved from a BanBot around the world.
-     * @param xmlData data recieved
-     */
-    void parseXml( QByteArray xmlData );
+    void setup();       /** sets up database and check's for it's existance */
 
-    qint16 m_port;              /** server port. FIXED TO: 6873 */
-    QByteArray m_data;          /** stash recieved data */
-    QUdpSocket *m_socket;       /** the server socket */
-    DbLogger *m_dbLogger;       /** write to database info recieved from BanBots */
+    QString m_dbDir     /** default database values. These are given on class initialization in the .cpp */
+    , m_dbName;
 };
 
-#endif  // UDPSERVER_H
+#endif  // DBLOGGER_H

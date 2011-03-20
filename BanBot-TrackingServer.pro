@@ -5,7 +5,8 @@
 #-------------------------------------------------
 
 QT += core \
-      network
+      network \
+      sql
 
 QT -= gui
 
@@ -19,9 +20,11 @@ TEMPLATE = app
 
 SOURCES += \
         src/main.cpp \
-        src/udpserver.cpp
+        src/udpserver.cpp \
+        src/dblogger.cpp
 
 HEADERS += \
-        src/udpserver.h
+        src/udpserver.h \
+        src/dblogger.h
 
 OBJECTS_DIR = .obj
