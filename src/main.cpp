@@ -31,6 +31,6 @@ int main( int argc, char *argv[] )
 
     UdpServer *udpServer = new UdpServer();
 //     TestSender asd;
-//     asd.test( "<BanBot><serverName>asd</serverName><version>aadddccc</version></BanBot>" );
+//     asd.test( "<BanBot><serverName>name</serverName><port>port</port><version>version</version></BanBot>");
     return a.exec();
 }
