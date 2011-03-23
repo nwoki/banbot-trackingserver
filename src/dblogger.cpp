@@ -24,7 +24,7 @@
 
 #include <QDebug>
 #include <QDir>
-#include <QTime>
+#include <QDate>
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QVariant>
@@ -66,8 +66,8 @@ void DbLogger::logServer( const UdpServer::RemoteServerInfo& remoteServer )
         insertQuery.append( "'" + remoteServer.ip + "'," );
         insertQuery.append( "'" + remoteServer.port + "'," );
         insertQuery.append( "'" + remoteServer.version + "'," );
-        insertQuery.append( "'" + QTime::currentTime().toString( "HH:mm:ss" ) + "'," );
-        insertQuery.append( "'" + QTime::currentTime().toString( "HH:mm:ss" ) + "');" );
+        insertQuery.append( "'" + QDate::currentDate().toString( "ddd d MMMM yyyy" ) + "'," );
+        insertQuery.append( "'" + QDate::currentDate().toString( "ddd d MMMM yyyy" ) + "');" );
 
         if( !query.exec( insertQuery ) ) {
             qDebug() << "\e[1;31m[ERROR] DbLogger::logServer can't execute query:'" << insertQuery << " : " << query.lastError().text() << "\e[0m";
@@ -78,7 +78,7 @@ void DbLogger::logServer( const UdpServer::RemoteServerInfo& remoteServer )
         QString updateQuery( "update servers set name='" );
         updateQuery.append( remoteServer.name );
         updateQuery.append( "',lastRecDate='" );
-        updateQuery.append( QTime::currentTime().toString( "HH:mm:ss" ) );
+        updateQuery.append( QDate::currentDate().toString( "ddd d MMMM yyyy" ) );
         updateQuery.append( "' where id='" );
         updateQuery.append( id );
         updateQuery.append( "';" );
